@@ -14,15 +14,18 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool passwordvisible = true;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final loginProvider = Provider.of<LoginController>(context, listen: false);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Color(0xff000000),
+      backgroundColor: const Color(0xff000000),
       body: Padding(
         padding: EdgeInsets.only(
           left: 36.w,
@@ -56,6 +59,11 @@ class _LoginState extends State<Login> {
                   style: font15weight400color838383),
               Gap(27.h),
               Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(11.r),
+                  color: const Color(0xff08131E),
+                ),
                 child: Column(
                   children: [
                     TextField(
@@ -63,7 +71,7 @@ class _LoginState extends State<Login> {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         prefixIcon: Padding(
-                          padding: EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(16),
                           child: Image.asset(
                             "$imgPath/person.png",
                             height: 22.h,
@@ -71,36 +79,42 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         hintText: "Username",
-                        hintStyle: TextStyle(color: Color(0xff7D7D7D)),
+                        hintStyle: const TextStyle(color: Color(0xff7D7D7D)),
                       ),
                     ),
-                    Divider(
+                    const Divider(
                       color: Color(0xff1C3347),
                     ),
-                    TextField(
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.all(16),
-                          child: Image.asset(
-                            "$imgPath/key.png",
-                            height: 22.h,
-                            width: 22.w,
+                    Consumer<LoginController>(builder: (context, value, child) {
+                      return TextField(
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Image.asset(
+                              "$imgPath/key.png",
+                              height: 22.h,
+                              width: 22.w,
+                            ),
+                          ),
+                          hintText: "Password",
+                          hintStyle: const TextStyle(color: Color(0xff7D7D7D)),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              value.obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,color: Colors.blue,
+                            ),
+                            onPressed: () {
+                              value.toggleObscureText();
+                            },
                           ),
                         ),
-                        hintText: "Password",
-                        hintStyle: TextStyle(color: Color(0xff7D7D7D)),
-                        suffixIcon: Icon(Icons.remove_red_eye, color: Colors.blue),
-                      ),
-                      obscureText: true,
-                    ),
+                        obscureText: value.obscureText,
+                      );
+                    }),
                   ],
-                ),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(11.r),
-                  color: Color(0xff08131E),
                 ),
               ),
               Gap(29.h),
@@ -114,21 +128,21 @@ class _LoginState extends State<Login> {
                   return GestureDetector(
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-
                         final username = _usernameController.text;
                         final password = _passwordController.text;
-                        final success = await loginModel.loginUser(username, password,context);
+                        final success = await loginModel.loginUser(
+                            username, password, context);
 
                         if (success) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => IndexPage(),
+                              builder: (context) => const IndexPage(),
                             ),
                           );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text('Login failed. Please try again.'),
                             ),
                           );
@@ -136,6 +150,12 @@ class _LoginState extends State<Login> {
                       }
                     },
                     child: Container(
+                      height: 48.h,
+                      width: 125.w,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(120.r),
+                        color: Colors.blue,
+                      ),
                       child: Row(
                         children: [
                           Gap(22.w),
@@ -144,17 +164,11 @@ class _LoginState extends State<Login> {
                             style: font16weight400colorwhite,
                           ),
                           Gap(9.w),
-                          Icon(
+                          const Icon(
                             Icons.arrow_forward,
                             color: Colors.white,
                           ),
                         ],
-                      ),
-                      height: 48.h,
-                      width: 125.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(120.r),
-                        color: Colors.blue,
                       ),
                     ),
                   );

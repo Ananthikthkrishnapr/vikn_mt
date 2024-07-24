@@ -9,26 +9,30 @@ class SalesController with ChangeNotifier {
   List<Sales> _salesData = [];
   int _currentPage = 1;
   bool _isLoading = false;
+  bool _hasMoreData = true;
 
   List<Sales> get salesData => _salesData;
   bool get isLoading => _isLoading;
 
   SalesController() {
-    // Removed initializeSharedPrefs() call (handled in LoginController)
+    dataLoading();
   }
 
   void setUserData(UserData userData) {
-    // Update access token and user ID from provided UserData
     _userData = userData;
-    print('Access Token (from Login): ${userData.accessToken}'); 
-    print('User ID (from Login): ${userData.userId}'); 
-
-    loadSalesData(); // Trigger initial data load
+    _currentPage = 1;
+    _salesData = [];
+    _hasMoreData = true;
+    dataLoading();
   }
 
-  Future<void> loadSalesData() async {
+  Future<void> dataLoading() async {
     if (_userData == null) {
       print('No user data available. Please login first.');
+      return;
+    }
+
+    if (!_hasMoreData) {
       return;
     }
 
@@ -36,7 +40,6 @@ class SalesController with ChangeNotifier {
     final String userId = _userData!.userId.toString();
 
     _isLoading = true;
-    _currentPage = 1; // Reset current page on new load
     notifyListeners();
 
     final Map<String, dynamic> requestData = {
@@ -45,7 +48,7 @@ class SalesController with ChangeNotifier {
       "CreatedUserID": userId,
       "PriceRounding": 3,
       "page_no": _currentPage,
-      "items_per_page": 10,
+      "items_per_page": 20,
       "type": "Sales",
       "WarehouseID": 1
     };
@@ -65,20 +68,20 @@ class SalesController with ChangeNotifier {
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       final salesData = jsonData['data'];
-      if (salesData != null) {
-        _salesData = salesData.map<Sales>((sale) => Sales.fromJson(sale)).toList();
+      if (salesData != null && salesData.isNotEmpty) {
+        _salesData.addAll(salesData.map<Sales>((sale) => Sales.fromJson(sale)).toList());
       } else {
-        _salesData = []; // Handle null data case (optional)
+        _hasMoreData = false;
       }
     } else {
-      _salesData = [];
+      _hasMoreData = false;
     }
   }
 
-  void loadMoreData() async {
-    if (!_isLoading) {
-      _currentPage++; // Increment page number for next load
-      await loadSalesData(); // Load data for the new page
+  void pagination() async {
+    if (!_isLoading && _hasMoreData) {
+      _currentPage++;
+      await dataLoading();
     }
   }
 }

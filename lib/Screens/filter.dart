@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:vikncodes_mt/const.dart';
 
 class Filter extends StatefulWidget {
@@ -53,9 +54,10 @@ class _FilterState extends State<Filter> {
                       height: 24.h,
                     ),
                     Gap(30.w),
-                    GestureDetector(onTap: () {
-                      Navigator.pop(context);
-                    },
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                       child: Text(
                         "Filter",
                         style: font14weight400colorsblue,
@@ -97,49 +99,55 @@ class _FilterState extends State<Filter> {
             padding: EdgeInsets.only(left: 60.w, right: 61.w, top: 18.h),
             child: Row(
               children: [
-                Container(
-                  height: 38.h,
-                  width: 148.w,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24.r),
-                      color: Color(0XFF1B2B30)),
-                  child: Row(
-                    children: [
-                      Gap(16.w),
-                      Image.asset(
-                        "$imgPath/calendar.png",
-                        width: 24.w,
-                        height: 24.h,
-                      ),
-                      Gap(9.w),
-                      Text(
-                        "12/09/2023",
-                        style: font15weight400colorwhite,
-                      )
-                    ],
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    height: 38.h,
+                    width: 148.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24.r),
+                        color: Color(0XFF1B2B30)),
+                    child: Row(
+                      children: [
+                        Gap(16.w),
+                        Image.asset(
+                          "$imgPath/calendar.png",
+                          width: 24.w,
+                          height: 24.h,
+                        ),
+                        Gap(9.w),
+                        Text(
+                          "12/09/2023",
+                          style: font15weight400colorwhite,
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Gap(13.w),
-                Container(
-                  height: 38.h,
-                  width: 148.w,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24.r),
-                      color: Color(0XFF1B2B30)),
-                  child: Row(
-                    children: [
-                      Gap(16.w),
-                      Image.asset(
-                        "$imgPath/calendar.png",
-                        width: 24.w,
-                        height: 24.h,
-                      ),
-                      Gap(9.w),
-                      Text(
-                        "12/09/2023",
-                        style: font15weight400colorwhite,
-                      )
-                    ],
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    height: 38.h,
+                    width: 148.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24.r),
+                        color: Color(0XFF1B2B30)),
+                    child: Row(
+                      children: [
+                        Gap(16.w),
+                        Image.asset(
+                          "$imgPath/calendar.png",
+                          width: 24.w,
+                          height: 24.h,
+                        ),
+                        Gap(9.w),
+                        Text(
+                          "12/09/2023",
+                          style: font15weight400colorwhite,
+                        )
+                      ],
+                    ),
                   ),
                 )
               ],
@@ -174,6 +182,7 @@ class _FilterState extends State<Filter> {
           Padding(
             padding: EdgeInsets.only(left: 27.w, right: 27.w),
             child: TextField(
+              readOnly: true,
               decoration: InputDecoration(
                   hintText: "Customer",
                   hintStyle: font15weight400colorslightash,

@@ -17,9 +17,9 @@ class LoginController extends ChangeNotifier {
   late String username;
   late String password;
   late bool isMobile;
-  // late bool _isLoading = false;
-  // late String _errorMessage;
-  // late Map<String, dynamic> _loginResponse;
+  late bool _isLoading = false;
+  late String _errorMessage;
+  late Map<String, dynamic> _loginResponse;
   String _accessToken = '';
   String get accessToken => _accessToken;
   bool _obscureText = true;
@@ -31,9 +31,9 @@ class LoginController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // bool get isLoading => _isLoading;
-  // String get errorMessage => _errorMessage;
-  // Map<String, dynamic> get loginResponse => _loginResponse;
+  bool get isLoading => _isLoading;
+  String get errorMessage => _errorMessage;
+  Map<String, dynamic> get loginResponse => _loginResponse;
 
   Future<bool> loginUser(
       String username, String password, BuildContext context) async {

@@ -174,7 +174,7 @@ class _FilterState extends State<Filter> {
                 Filter_box(
                   textdetails: "Cancelled",
                   containercolor: Color(0XFF1B2B30),
-                )
+                ),
               ],
             ),
           ),
